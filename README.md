@@ -1,11 +1,11 @@
 Shared Tracking Controller
 ==========================
 
-This is the Shared Tracking Controller code which can be used to easily manage multiple iOS analytics packages. Included in this code are configurations for [flurry][], [google][], and [localytics][]. It should be easy to adapt this to most new analytics APIs.
+This is the Shared Tracking Controller code which can be used to easily manage multiple iOS analytics packages. Included in this code are configurations for [Flurry][], [Google Analytics][], and [Localytics][]. It should be easy to adapt this to most new analytics APIs.
 
-   [flurry]: http://www.flurry.com "Flurry"
-   [localytics]: http://www.localytics.com "Localytics"
-   [google]: http://www.google.com/analytics "Google Analytics"
+   [Flurry]: http://www.flurry.com "Flurry"
+   [Localytics]: http://www.localytics.com "Localytics"
+   [Google Analytics]: http://www.google.com/analytics "Google Analytics"
 
 Usage
 -----

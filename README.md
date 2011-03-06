@@ -3,12 +3,12 @@ Shared Tracking Controller
 
 This is the Shared Tracking Controller code which can be used to easily manage multiple iOS analytics packages. Included in this code are configurations for [Flurry](http://www.flurry.com), [Google Analytics](http://www.google.com/analytics), and [Localytics](http://www.localytics.com). It should be easy to adapt this to most new analytics APIs.
 
-TrackingController is a singleton instance. You invoke all methods by first calling +[TrackingController sharedTrackingController].
-
 Usage
 -----
 
 Include the three files TrackingController.h, TrackingController.m, and TrackingControllerDefs.h to your project. Modify TrackingControllerDefs.h to reference your application key, account ID, etc. as needed. Comment out the services you don't want to use.
+
+TrackingController is a singleton instance. You invoke all methods by first calling +[TrackingController sharedTrackingController].
 
 In you application delegate you must do at least the following:
 

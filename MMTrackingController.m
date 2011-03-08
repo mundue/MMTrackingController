@@ -1,5 +1,5 @@
 //
-//  TrackingController.m
+//  MMTrackingController.m
 //
 //  Created by Matt Martel on 02/20/09
 //  Copyright Mundue LLC 2008-2011. All rights reserved.
@@ -10,8 +10,8 @@
 // Modify as needed for other services.
 //
 
-#import "TrackingController.h"
-#import "TrackingControllerDefs.h"
+#import "MMTrackingController.h"
+#import "MMTrackingControllerDefs.h"
 
 #ifdef USES_FLURRY
 #import "FlurryAPI.h"
@@ -27,17 +27,17 @@
 static const NSInteger kGANDispatchPeriodSec = 10;
 #endif
 
-@implementation TrackingController
+@implementation MMTrackingController
 
-static TrackingController* _sharedTrackingController = nil;
+static MMTrackingController* _sharedTrackingController = nil;
 
 #pragma mark -
 #pragma mark Singleton Methods
 
-+ (TrackingController*) sharedTrackingController {
++ (MMTrackingController*) sharedTrackingController {
 	@synchronized(self) {
 		if ( _sharedTrackingController == nil ) {
-			_sharedTrackingController = [[TrackingController alloc] init];
+			_sharedTrackingController = [[MMTrackingController alloc] init];
 		}
 	}
 	return _sharedTrackingController;
@@ -74,7 +74,7 @@ static TrackingController* _sharedTrackingController = nil;
 }
 
 #pragma mark -
-#pragma mark TrackingController Methods
+#pragma mark MMTrackingController Methods
 
 - (void) startTracking {
 #ifdef USES_FLURRY

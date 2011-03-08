@@ -14,7 +14,7 @@ Include the three files MMTrackingController.h, MMTrackingController.m, and MMTr
 
 MMTrackingController is a singleton instance. You invoke all methods by first calling +[MMTrackingController sharedTrackingController].
 
-In you application delegate you must do at least the following:
+In your application delegate you must do at least the following:
 
     #import "MMTrackingController.h"
 

@@ -10,7 +10,7 @@ This is the MMTrackingController code which can be used to easily manage multipl
 Usage
 -----
 
-Include the three files MMTrackingController.h, MMTrackingController.m, and MMTrackingController.h to your project. Modify MMTrackingControllerDefs.h to reference your application key, account ID, etc. as needed. Comment out the services you don't want to use.
+Include the three files MMTrackingController.h, MMTrackingController.m, and MMTrackingControllerDefs.h to your project. Modify MMTrackingControllerDefs.h to reference your application key, account ID, etc. as needed. Comment out the services you don't want to use. Add the libs & headers for the individual services as needed.
 
 MMTrackingController is a singleton instance. You invoke all methods by first calling +[MMTrackingController sharedTrackingController].
 
@@ -26,21 +26,21 @@ In your application delegate you must do at least the following:
 		[[MMTrackingController sharedTrackingController] stopTracking];
 	}
 	
-If your application supports multitasking on iSO 4.x, you should also add the following calls:
+If your application supports multitasking on iOS 4.x, you should also add the following calls:
 
 	- (void)applicationWillEnterForeground:(UIApplication *)application {
-		[[MMTrackingController sharedTrackingController] logEvent:@"EnterForeground" ];
+		[[MMTrackingController sharedTrackingController] logEvent:@"EnterForeground"];
 	}
 
 	- (void)applicationDidEnterBackground:(UIApplication *)application {
-		[[MMTrackingController sharedTrackingController] logEvent:@"EnterBackground" ];
+		[[MMTrackingController sharedTrackingController] logEvent:@"EnterBackground"];
 	}
 
 This will properly trigger suspend/resume handling of the tracking code. See -[MMTrackingController logEvent] for example of how Localytics handles this case.
 
 Any place in your code where you'd like to track an interesting event, simply add a line like this:
 
-	[[MMTrackingController sharedTrackingController] logEvent:@"eventOfInterest" ];
+	[[MMTrackingController sharedTrackingController] logEvent:@"eventOfInterest"];
 	
 Note: Flurry has a special "error handler" that you can use to log exceptions to. You need to install the exception handler and invoke -[MMTrackingController logError] like this:
 

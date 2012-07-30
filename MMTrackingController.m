@@ -2,7 +2,7 @@
 //  MMTrackingController.m
 //
 //  Created by Matt Martel on 02/20/09
-//  Copyright Mundue LLC 2008-2011. All rights reserved.
+//  Copyright Mundue LLC 2008-2012. All rights reserved.
 //
 
 //
@@ -14,7 +14,7 @@
 #import "MMTrackingControllerDefs.h"
 
 #ifdef USES_FLURRY
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #endif
 
 #ifdef USES_LOCALYTICS
@@ -78,7 +78,7 @@ static MMTrackingController* _sharedTrackingController = nil;
 
 - (void) startTracking {
 #ifdef USES_FLURRY
-	[FlurryAnalytics startSession:kFlurryAPIKey];
+	[Flurry startSession:kFlurryAPIKey];
 #endif
 #ifdef USES_LOCALYTICS
 	[[LocalyticsSession sharedLocalyticsSession] startSession:kLocalyticsAppKey];
@@ -110,7 +110,7 @@ static MMTrackingController* _sharedTrackingController = nil;
 	NSLog( @"Log Event: %@", event );
 #endif
 #ifdef USES_FLURRY
-	[FlurryAnalytics logEvent:event];
+	[Flurry logEvent:event];
 #endif
 #ifdef USES_LOCALYTICS
 	if ( [event isEqualToString:@"EnterForeground"] ) {
@@ -138,7 +138,7 @@ static MMTrackingController* _sharedTrackingController = nil;
 // Flurry ONLY !!!
 - (void) logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception {
 #ifdef USES_FLURRY
-	[FlurryAnalytics logError:errorID message:message exception:exception];
+	[Flurry logError:errorID message:message exception:exception];
 #endif
 }
 

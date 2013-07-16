@@ -2,7 +2,7 @@
 //  MMTrackingController.m
 //
 //  Created by Matt Martel on 02/20/09
-//  Copyright Mundue LLC 2008-2012. All rights reserved.
+//  Copyright Mundue LLC 2008-2013. All rights reserved.
 //
 
 //
@@ -34,7 +34,8 @@ static MMTrackingController* _sharedTrackingController = nil;
 #pragma mark -
 #pragma mark Singleton Methods
 
-+ (MMTrackingController*) sharedTrackingController {
++ (MMTrackingController*)sharedTrackingController
+{
 	@synchronized(self) {
 		if ( _sharedTrackingController == nil ) {
 			_sharedTrackingController = [[MMTrackingController alloc] init];
@@ -43,7 +44,8 @@ static MMTrackingController* _sharedTrackingController = nil;
 	return _sharedTrackingController;
 }
 
-+ (id)allocWithZone:(NSZone *)zone {	
++ (id)allocWithZone:(NSZone *)zone
+{
     @synchronized(self) {
         if (_sharedTrackingController == nil) {
             _sharedTrackingController = [super allocWithZone:zone];			
@@ -53,30 +55,36 @@ static MMTrackingController* _sharedTrackingController = nil;
     return nil; //on subsequent allocation attempts return nil	
 }
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone
+{
     return self;	
 }
 
-- (id)retain {	
-    return self;	
-}
+//- (id)retain
+//{
+//    return self;	
+//}
 
-- (unsigned)retainCount {
-    return UINT_MAX;  //denotes an object that cannot be released
-}
+//- (unsigned)retainCount
+//{
+//    return UINT_MAX;  //denotes an object that cannot be released
+//}
 
-- (void)release {
-    //do nothing
-}
+//- (void)release
+//{
+//    //do nothing
+//}
 
-- (id)autorelease {
-    return self;	
-}
+//- (id)autorelease
+//{
+//    return self;	
+//}
 
 #pragma mark -
 #pragma mark MMTrackingController Methods
 
-- (void) startTracking {
+- (void)startTracking
+{
 #ifdef USES_FLURRY
 	[Flurry startSession:kFlurryAPIKey];
 #endif
@@ -91,7 +99,8 @@ static MMTrackingController* _sharedTrackingController = nil;
 	[self logEvent:@"Launch" ];										   
 }
 
-- (void) stopTracking {
+- (void)stopTracking
+{
 	[self logEvent:@"Terminate" ];
 #ifdef USES_FLURRY
 	// Nothing to do
@@ -105,7 +114,8 @@ static MMTrackingController* _sharedTrackingController = nil;
 #endif
 }
 
-- (void) logEvent:(NSString*)event {
+- (void)logEvent:(NSString*)event
+{
 #ifdef DEBUG	
 	NSLog( @"Log Event: %@", event );
 #endif
@@ -136,7 +146,8 @@ static MMTrackingController* _sharedTrackingController = nil;
 }
 
 // Flurry ONLY !!!
-- (void) logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception {
+- (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception
+{
 #ifdef USES_FLURRY
 	[Flurry logError:errorID message:message exception:exception];
 #endif

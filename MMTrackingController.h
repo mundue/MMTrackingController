@@ -2,13 +2,12 @@
 //  MMTrackingController.h
 //
 //  Created by Matt Martel on 02/20/09
-//  Copyright Mundue LLC 2008-2012. All rights reserved.
+//  Copyright Mundue LLC 2008-2013. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface MMTrackingController : NSObject {
-}
+@interface MMTrackingController : NSObject
 
 + (MMTrackingController*) sharedTrackingController;
 - (void) startTracking;

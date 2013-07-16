@@ -2,7 +2,7 @@
 //  MMTrackingControllerDefs.h
 //
 //  Created by Matt Martel on 02/20/09
-//  Copyright Mundue LLC 2008-2012. All rights reserved.
+//  Copyright Mundue LLC 2008-2013. All rights reserved.
 //
 
 // Create an account at http://www.flurry.com

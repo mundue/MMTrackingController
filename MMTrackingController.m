@@ -2,11 +2,11 @@
 //  MMTrackingController.m
 //
 //  Created by Matt Martel on 02/20/09
-//  Copyright Mundue LLC 2008-2013. All rights reserved.
+//  Copyright (c) 2009-2014, Mundue LLC. All rights reserved.
 //
 
 //
-// Demonstrates how to integrate Flurry, Google Analytics, and Localtyics.
+// Demonstrates how to integrate Flurry and Google Analytics.
 // Modify as needed for other services.
 //
 
@@ -17,12 +17,11 @@
 #import "Flurry.h"
 #endif
 
-#ifdef USES_LOCALYTICS
-#import "LocalyticsSession.h"
-#endif
-
-#ifdef USES_GANTRACKER
-#import "GANTracker.h"
+#ifdef USES_GAITRACKER
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
+static id<GAITracker> _tracker;
 // Dispatch period in seconds
 static const NSInteger kGANDispatchPeriodSec = 10;
 #endif
@@ -31,8 +30,7 @@ static const NSInteger kGANDispatchPeriodSec = 10;
 
 static MMTrackingController* _sharedTrackingController = nil;
 
-#pragma mark -
-#pragma mark Singleton Methods
+#pragma mark - Singleton Methods
 
 + (MMTrackingController*)sharedTrackingController
 {
@@ -60,60 +58,37 @@ static MMTrackingController* _sharedTrackingController = nil;
     return self;	
 }
 
-//- (id)retain
-//{
-//    return self;	
-//}
+#pragma mark - MMTrackingController Methods
 
-//- (unsigned)retainCount
-//{
-//    return UINT_MAX;  //denotes an object that cannot be released
-//}
-
-//- (void)release
-//{
-//    //do nothing
-//}
-
-//- (id)autorelease
-//{
-//    return self;	
-//}
-
-#pragma mark -
-#pragma mark MMTrackingController Methods
-
+// Call once from ApplicationDidFinishLaunchingWithOptions:.
 - (void)startTracking
 {
 #ifdef USES_FLURRY
+    [Flurry setAppVersion:@"1.0"]; // Optional
+    [Flurry setCrashReportingEnabled:YES]; // Optional
 	[Flurry startSession:kFlurryAPIKey];
 #endif
-#ifdef USES_LOCALYTICS
-	[[LocalyticsSession sharedLocalyticsSession] startSession:kLocalyticsAppKey];
-#endif
-#ifdef USES_GANTRACKER
-	[[GANTracker sharedTracker] startTrackerWithAccountID:kGANAccountIDKey
-										   dispatchPeriod:kGANDispatchPeriodSec
-												 delegate:nil];
+#ifdef USES_GAITRACKER
+    [GAI sharedInstance].dispatchInterval = kGANDispatchPeriodSec;
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    _tracker = [[GAI sharedInstance] trackerWithTrackingId:kGAAccountIDKey];
 #endif
 	[self logEvent:@"Launch" ];										   
 }
 
+// Call once from applicationWillTerminate: on iOS 3 & non-multitasking devices.
 - (void)stopTracking
 {
 	[self logEvent:@"Terminate" ];
 #ifdef USES_FLURRY
 	// Nothing to do
 #endif
-#ifdef USES_LOCALYTICS
-    [[LocalyticsSession sharedLocalyticsSession] close];
-    [[LocalyticsSession sharedLocalyticsSession] upload];
-#endif
-#ifdef USES_GANTRACKER
-	[[GANTracker sharedTracker] stopTracker];
+#ifdef USES_GAITRACKER
+	// Nothing to do
 #endif
 }
 
+// Call to log an arbitrary event.
 - (void)logEvent:(NSString*)event
 {
 #ifdef DEBUG	
@@ -122,34 +97,27 @@ static MMTrackingController* _sharedTrackingController = nil;
 #ifdef USES_FLURRY
 	[Flurry logEvent:event];
 #endif
-#ifdef USES_LOCALYTICS
-	if ( [event isEqualToString:@"EnterForeground"] ) {
-		[[LocalyticsSession sharedLocalyticsSession] resume];
-		[[LocalyticsSession sharedLocalyticsSession] upload];
-	}
-	[[LocalyticsSession sharedLocalyticsSession] tagEvent:event];
-	if ( [event isEqualToString:@"EnterBackground"] ) {
-		[[LocalyticsSession sharedLocalyticsSession] close];
-		[[LocalyticsSession sharedLocalyticsSession] upload];
-	}
-#endif
-#ifdef USES_GANTRACKER
-	NSError *error;
-	if (![[GANTracker sharedTracker] trackEvent:kGANCategoryKey
-										 action:event
-										  label:nil
-										  value:-1
-									  withError:&error]) {
-		// Handle error here
-	}
+#ifdef USES_GAITRACKER
+    [_tracker send:[[GAIDictionaryBuilder createEventWithCategory:kGACategoryKey action:event label:nil value:nil] build]];
 #endif
 }
 
-// Flurry ONLY !!!
+// Call to log an error.
 - (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception
 {
 #ifdef USES_FLURRY
 	[Flurry logError:errorID message:message exception:exception];
+#endif
+#ifdef USES_GAITRACKER
+    [_tracker send:[[GAIDictionaryBuilder createExceptionWithDescription:exception.description withFatal:[NSNumber numberWithBool:YES]] build]];
+#endif
+}
+
+// Call to log a screen visit.
+- (void)screenName:(NSString*)screen
+{
+#ifdef USES_GAITRACKER
+    [_tracker send:@{kGAIScreenName:screen, kGAIHitType:kGAIAppView}];
 #endif
 }
 

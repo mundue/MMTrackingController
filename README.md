@@ -1,10 +1,9 @@
 Shared Tracking Controller
 ==========================
 
-This is the MMTrackingController code which can be used to easily manage multiple iOS analytics packages. Included in this code are configurations for [Flurry][], [Google Analytics][], and [Localytics][]. It should be easy to adapt this to most new analytics APIs.
+This is the MMTrackingController code which can be used to easily manage multiple iOS analytics packages. Included in this code are configurations for [Flurry][] and [Google Analytics][]. It should be easy to adapt this to most new analytics APIs.
 
    [Flurry]: http://www.flurry.com "Flurry"
-   [Localytics]: http://www.localytics.com "Localytics"
    [Google Analytics]: http://www.google.com/analytics "Google Analytics"
 
 Usage
@@ -36,11 +35,15 @@ If your application supports multitasking on iOS 4.x, you should also add the fo
 		[[MMTrackingController sharedTrackingController] logEvent:@"EnterBackground"];
 	}
 
-This will properly trigger suspend/resume handling of the tracking code. See -[MMTrackingController logEvent] for example of how Localytics handles this case.
+This will properly trigger suspend/resume handling of the tracking code, if needed.
 
 Any place in your code where you'd like to track an interesting event, simply add a line like this:
 
 	[[MMTrackingController sharedTrackingController] logEvent:@"eventOfInterest"];
+
+Google also lets you track screens “visited” by subclassing the GAITrackedViewController. Alternatively you can report screens with calls like like:
+
+	[[MMTrackingController sharedTrackingController] screenName:@“SettingsScreen”];
 	
 Note: Flurry has a special "error handler" that you can use to log exceptions to. You need to install the exception handler and invoke -[MMTrackingController logError] like this:
 
